@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Velvet Noir</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-1: #120b16;
+            --bg-2: #1d1223;
+            --panel: rgba(27, 18, 31, 0.9);
+            --panel-border: rgba(255, 255, 255, 0.12);
+            --text: #f9edf8;
+            --muted: #d6b5d3;
+            --accent: #ff4f9d;
+            --accent-2: #ff8a5b;
+            --soft: #ffd5e7;
+            --input: rgba(255, 255, 255, 0.04);
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            font-family: Arial, Helvetica, sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(circle at top left, rgba(255, 96, 160, 0.22), transparent 35%),
+                radial-gradient(circle at bottom right, rgba(255, 138, 91, 0.18), transparent 32%),
+                linear-gradient(135deg, var(--bg-1), var(--bg-2));
+            overflow: hidden;
+        }
+
+        body::before,
+        body::after {
+            content: "";
+            position: fixed;
+            width: 420px;
+            height: 420px;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: 0;
+            opacity: 0.7;
+        }
+
+        body::before {
+            background: rgba(255, 79, 157, 0.28);
+            top: -80px;
+            left: -60px;
+        }
+
+        body::after {
+            background: rgba(255, 138, 91, 0.24);
+            right: -40px;
+            bottom: -110px;
+        }
+
+        .page {
+            position: relative;
+            z-index: 1;
+            width: min(1100px, 92vw);
+            min-height: 700px;
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            background: rgba(19, 13, 17, 0.72);
+            border: 1px solid var(--panel-border);
+            border-radius: 28px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(16px);
+            overflow: hidden;
+        }
+
+        .hero {
+            position: relative;
+            padding: 60px 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: linear-gradient(160deg, rgba(255,255,255,0.03), rgba(255,255,255,0));
+        }
+
+        .brand {
+            letter-spacing: 0.28rem;
+            text-transform: uppercase;
+            color: var(--soft);
+            font-size: 0.72rem;
+            margin-bottom: 18px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: clamp(3rem, 5vw, 5rem);
+            line-height: 0.96;
+            letter-spacing: -0.08em;
+        }
+
+        .highlight {
+            display: block;
+            background: linear-gradient(90deg, var(--soft), var(--accent), var(--accent-2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .subtext {
+            max-width: 520px;
+            margin-top: 24px;
+            font-size: 1.08rem;
+            line-height: 1.8;
+            color: var(--muted);
+        }
+
+        .stats {
+            margin-top: 36px;
+            display: flex;
+            gap: 28px;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            min-width: 120px;
+        }
+
+        .stat strong {
+            display: block;
+            font-size: 1.7rem;
+            color: var(--text);
+        }
+
+        .stat span {
+            color: var(--muted);
+            font-size: 0.85rem;
+            letter-spacing: 0.08rem;
+            text-transform: uppercase;
+        }
+
+        .panel {
+            position: relative;
+            padding: 40px 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.02);
+            border-left: 1px solid var(--panel-border);
+        }
+
+        .form-wrap {
+            width: min(100%, 390px);
+            background: rgba(18, 12, 18, 0.82);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 24px;
+            padding: 26px 22px 18px;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 24px 55px rgba(0,0,0,0.3);
+        }
+
+        .form-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+
+        .form-top h2 {
+            margin: 0;
+            font-size: 1.8rem;
+        }
+
+        .pill {
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: rgba(255, 79, 157, 0.12);
+            border: 1px solid rgba(255, 79, 157, 0.2);
+            color: var(--soft);
+            font-size: 0.7rem;
+            letter-spacing: 0.08rem;
+            text-transform: uppercase;
+        }
+
+        form {
+            display: grid;
+            gap: 16px;
+        }
+
+        .field {
+            display: grid;
+            gap: 8px;
+        }
+
+        label {
+            color: var(--soft);
+            font-size: 0.83rem;
+            letter-spacing: 0.06rem;
+            text-transform: uppercase;
+        }
+
+        input {
+            width: 100%;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: var(--input);
+            color: var(--text);
+            border-radius: 14px;
+            padding: 14px 15px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+        }
+
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.38);
+        }
+
+        input:focus {
+            border-color: rgba(255, 79, 157, 0.8);
+            box-shadow: 0 0 0 4px rgba(255, 79, 157, 0.12);
+            transform: translateY(-1px);
+        }
+
+        .inline-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .checkbox-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--accent);
+            margin: 0;
+        }
+
+        .btn {
+            border: none;
+            cursor: pointer;
+            margin-top: 8px;
+            padding: 15px 18px;
+            border-radius: 14px;
+            color: white;
+            font-weight: 700;
+            font-size: 0.98rem;
+            letter-spacing: 0.04rem;
+            background: linear-gradient(90deg, var(--accent), var(--accent-2));
+            box-shadow: 0 14px 28px rgba(255, 79, 157, 0.28);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 18px 34px rgba(255, 79, 157, 0.34);
+        }
+
+        .signin {
+            text-align: center;
+            margin-top: 16px;
+            font-size: 0.9rem;
+            color: var(--muted);
+        }
+
+        .signin a {
+            color: var(--soft);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        @media (max-width: 860px) {
+            .page {
+                grid-template-columns: 1fr;
+            }
+
+            .panel {
+                border-left: none;
+                border-top: 1px solid var(--panel-border);
+                padding-top: 24px;
+            }
+
+            .hero {
+                padding-bottom: 28px;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .hero,
+            .panel {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+
+            .inline-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <section class="hero">
+            <div class="brand">Velvet Noir</div>
+            <h1>
+                Own the <span class="highlight">night</span>
+            </h1>
+            <p class="subtext">
+                Curated for people who like a little drama, a lot of confidence, and a look that turns every room into a headline.
+            </p>
+
+            <div class="stats">
+                <div class="stat">
+                    <strong>24k</strong>
+                    <span>Members</span>
+                </div>
+                <div class="stat">
+                    <strong>9.8</strong>
+                    <span>Rating</span>
+                </div>
+                <div class="stat">
+                    <strong>48h</strong>
+                    <span>Response</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel">
+            <div class="form-wrap">
+                <div class="form-top">
+                    <h2>Sign Up</h2>
+                    <span class="pill">VIP</span>
+                </div>
+
+                <form action="potato" method="post">
+                    <div class="inline-row">
+                        <div class="field">
+                            <label for="name">Name</label>
+                            <input type="text" placeholder="John Doe" id="name" name="name" required>
+                        </div>
+                        <div class="field">
+                            <label for="birthdate">DOB</label>
+                            <input type="date" id="birthdate" name="birthdate" required>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label for="email">Email</label>
+                        <input type="email" placeholder="you@example.com" id="email" name="email" required>
+                    </div>
+
+                    <div class="field">
+                        <label for="password">Password</label>
+                        <input type="password" placeholder="Create a strong password" id="password" name="password" required>
+                    </div>
+
+                    <div class="checkbox-row">
+                        <input type="checkbox" id="subscribe" name="subscribe">
+                        <label for="subscribe">Send me exclusive updates</label>
+                    </div>
+
+                    <button class="btn" type="submit">Create Account</button>
+                </form>
+
+                <div class="signin">
+                    Already part of the scene? <a href="#">Sign in</a>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>
